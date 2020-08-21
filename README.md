@@ -43,6 +43,9 @@ Run this project for production
 ```bash
 npm run start
 ```
+NB: Please remember production run will use [`pm2`](https://pm2.keymetrics.io/). For smooth run, make sure you have installed `pm2` globally.
+
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
