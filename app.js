@@ -13,7 +13,6 @@ const {swaggerServe, swaggerSetup} = require("./config/swagger");
 const xssClean = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const compression = require("compression");
-const seeds = require("./seeds");
 
 const routes = require("./routes");
 
@@ -40,8 +39,6 @@ if (process.env.NODE_ENVIRONMENT === "production") {
     app.use(expressRateLimit); // per window rate limit
     app.use(expressSlowDown);  // slows down responses rather than blocking
 }
-
-seeds(false); // seeds
 
 app.use(routes); // routes
 
