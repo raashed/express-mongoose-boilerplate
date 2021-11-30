@@ -1,9 +1,9 @@
 const passportHttp = require("passport-http");
 const catchAsync = require("../utils/catchAsync");
-const oAuthClientModel = require("./../models/oAuthClient.model");
+const {OAuthClientModel} = require("./../models/oAuthClient.model");
 
 const passportHttpInit = new passportHttp.BasicStrategy("Users", catchAsync(async (name, secret, done) => {
-    const client = await oAuthClientModel.findOne({name, secret});
+    const client = await OAuthClientModel.findOne({name, secret});
 
     if (!client) {
         const error = new Error("client not found");

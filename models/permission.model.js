@@ -2,13 +2,12 @@ const mongoose = require("mongoose");
 const {Schema} = mongoose;
 
 const schema = new Schema({
-    _id: {
+    name: {
         type: String,
         required: true,
-        trim: true,
-        lowercase: true,
+        unique: true,
     },
-    name: {
+    displayName: {
         type: String,
         required: true,
     },
@@ -16,9 +15,7 @@ const schema = new Schema({
         type: String,
         required: true,
     },
-}, {
-    timestamps: true,
-});
+}, { timestamps: true });
 
 schema.methods.toJSON = function () {
     let obj = this.toObject();
@@ -30,6 +27,5 @@ schema.methods.toJSON = function () {
     return obj;
 };
 
-const model = mongoose.model("Permission", schema);
-
-module.exports = model;
+const model = mongoose.model("permission", schema);
+module.exports = {PermissionModel: model};

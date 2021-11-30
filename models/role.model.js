@@ -1,33 +1,31 @@
 const mongoose = require("mongoose");
 const {Schema} = mongoose;
 
+const status = Object.freeze({
+    active: 'active',
+    inactive: 'inactive',
+    deleted: 'deleted',
+});
+
 const schema = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    status: {
+        type: String,
+        enum: Object.values(status),
+        required: true,
     },
     permissions: [{
         type: String,
-        ref: "Permission",
         default: [],
     }],
-}, {
-    timestamps: true,
-});
-
-schema.statics.isUnique = async function (name) {
-    const role = await this.findOne({name: name});
-    if (!role) {
-        return false;
-    }
-
-    if (role.name === name) {
-        return {name};
-    }
-
-    return false;
-};
+}, { timestamps: true });
 
 schema.methods.toJSON = function () {
     let obj = this.toObject();
@@ -39,6 +37,5 @@ schema.methods.toJSON = function () {
     return obj;
 };
 
-const model = mongoose.model("Role", schema);
-
-module.exports = model;
+const model = mongoose.model("role", schema);
+module.exports = {RoleModel: model, RoleStatus: status};

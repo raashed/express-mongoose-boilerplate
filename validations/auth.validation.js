@@ -1,4 +1,5 @@
 const Joi = require('@hapi/joi');
+const {validate} = require("../utils/validate");
 
 const login = {
     body: Joi.object({
@@ -7,23 +8,28 @@ const login = {
     })
 };
 
-const loginUpdate = {
+const renew = {
     body: Joi.object({
+        access: Joi.string().required(),
         refresh: Joi.string().required(),
     })
 };
 
 const register = {
     body: Joi.object({
-        name: Joi.string().required(),
         username: Joi.string().required(),
-        email: Joi.string().required(),
-        password: Joi.string().required(),
+        firstName: Joi.string().required(),
+        lastName: Joi.string().required(),
+        email: Joi.string().email().required(),
+        phone: Joi.string().length(11).required(),
+        gender: Joi.string().required(),
+        superAdmin: Joi.boolean().required(),
+        password: Joi.string().regex(/^[\w]{6,30}$/).required()
     })
 };
 
 module.exports = {
-    login,
-    loginUpdate,
-    register,
+    loginValidation: validate(login),
+    renewValidation: validate(renew),
+    registerValidation: validate(register)
 }

@@ -1,6 +1,6 @@
 const passport = require("passport");
-const oAuthAccessTokenModel = require("./../models/oAuthAccessToken.model");
-const oAuthRefreshTokenModel = require("./../models/oAuthRefreshToken.model");
+const {OAuthAccessTokenModel} = require("./../models/oAuthAccessToken.model");
+const {OAuthRefreshTokenModel} = require("./../models/oAuthRefreshToken.model");
 const catchAsync = require("./../utils/catchAsync");
 const ApiError = require("./../utils/ApiError");
 const httpStatus = require("http-status");
@@ -15,14 +15,14 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
         return reject(error);
     }
 
-    const oAuthTokenDetail = await oAuthAccessTokenModel.findOne({
+    const oAuthTokenDetail = await OAuthAccessTokenModel.findOne({
         _id: req.headers.authorization.split(" ")[1],
         revoked: false,
         expires: {$gte: moment().format()}
     });
 
     if (oAuthTokenDetail) {
-        const oAuthRefreshDetail = await oAuthRefreshTokenModel.findOne({
+        const oAuthRefreshDetail = await OAuthRefreshTokenModel.findOne({
             accessToken: oAuthTokenDetail._id,
             revoked: false,
             expires: {$gte: moment().format()}

@@ -9,10 +9,10 @@ const uniqueCheck = async isUnique => {
 const requiredCheck = async errors => {
     const validationError = {};
     await Object.keys(errors).forEach(key => {
-        validationError[err.errors[key].path] = err.errors[key].message;
+        validationError[errors[key].path] = errors[key].message;
     });
     return validationError;
 }
 
 
-module.exports = {uniqueCheck, requiredCheck,};
+module.exports = {uniqueCheck, requiredCheck};

@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {login, loginUpdate, register} = require("./../controllers/auth.controller");
+
 const {isClientAuthenticated, isAuthenticated} = require("./../middlewares/auth.middleware");
-const {loginValidation, loginUpdateValidation, registerValidation} = require("./../validations");
+const {login, renew, register, logout} = require("./../controllers/auth.controller");
+const {loginValidation, renewValidation, registerValidation} = require("./../validations/auth.validation");
 
 /**
  * @swagger
@@ -70,9 +71,9 @@ router.post("/login", isClientAuthenticated, loginValidation, login);
 /**
  * @swagger
  *
- * /auth/login-update:
+ * /auth/renew:
  *   post:
- *     description: Register a new user
+ *     description: Renew authentication
  *     consumes:
  *       - application/json
  *     produces:
@@ -105,7 +106,7 @@ router.post("/login", isClientAuthenticated, loginValidation, login);
  *       422:
  *         description: Validation error
  */
-router.post("/login-update", isAuthenticated(''), loginUpdateValidation, loginUpdate);
+router.post("/renew", isClientAuthenticated, renewValidation, renew);
 
 /**
  * @swagger
@@ -146,5 +147,6 @@ router.post("/login-update", isAuthenticated(''), loginUpdateValidation, loginUp
  *         description: Validation error
  */
 router.post("/register", isClientAuthenticated, registerValidation, register);
+router.delete("/logout", isAuthenticated(''), logout);
 
 module.exports = router;

@@ -12,6 +12,7 @@ const updateSeedRunnable = value => {
     if (isSeedRunnable) {
         require("./oAuthClient.seed");
         require("./user.seed");
+        require("./permission.seed");
     }
 };
 
