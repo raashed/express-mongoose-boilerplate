@@ -12,6 +12,14 @@ cd express-mongoose-boilerplate
 npm install
 ```
 
+## Seed
+
+Run this command to insert seeds
+
+```bash
+npm run db-seed
+```
+
 ## Usage
 
 First copy `.env.example` file as `.env`
