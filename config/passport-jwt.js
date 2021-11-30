@@ -1,6 +1,6 @@
 const passportJwt = require("passport-jwt");
 const catchAsync = require("../utils/catchAsync");
-const UserModel = require("./../models/user.model");
+const {UserModel} = require("./../models/user.model");
 
 const passportJwtInit = new passportJwt.Strategy({
     jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeaderAsBearerToken(),

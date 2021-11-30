@@ -1,7 +1,8 @@
 const {pick} = require('lodash');
 const Joi = require('@hapi/joi');
-const ApiError = require("./../utils/ApiError");
 const httpStatus = require("http-status");
+
+const ApiError = require("./../utils/ApiError");
 
 const validate = (schema) => async (req, res, next) => {
     const validSchema = pick(schema, ['params', 'query', 'body']);
@@ -11,12 +12,12 @@ const validate = (schema) => async (req, res, next) => {
         .validate(object, {abortEarly: false});
 
     if (error) {
+        const message = error && error.details && error.details.length ? error.details[0].message : "Something went wrong!";
         const err = {};
         await error.details.forEach(e => {
             err[e.path[1]] = e.message.toString();
-            console.log(e.path)
         });
-        const apiError = new ApiError(httpStatus.UNPROCESSABLE_ENTITY, err, true, error);
+        const apiError = new ApiError(httpStatus.UNPROCESSABLE_ENTITY, {message}, true, err);
         return next(apiError);
     }
 
@@ -25,10 +26,4 @@ const validate = (schema) => async (req, res, next) => {
     return  next();
 };
 
-const {login, loginUpdate, register,} = require("./../validations/auth.validation");
-
-module.exports = {
-    loginValidation: validate(login),
-    loginUpdateValidation: validate(loginUpdate),
-    registerValidation: validate(register),
-}
+module.exports = {validate};

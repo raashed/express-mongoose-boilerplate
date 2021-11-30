@@ -1,11 +1,52 @@
 const mongoose = require("mongoose");
-const {Schema, ObjectId} = mongoose;
 const bcrypt = require("bcrypt");
+const {Schema, ObjectId} = mongoose;
+
+const status = Object.freeze({ active: 'active', inactive: 'inactive', deleted: 'deleted' });
+const gender = Object.freeze({ male: 'male', female: 'female' });
+const identityType = Object.freeze({ nid: 'nid', passport: 'passport', birthCertificate: 'birth_certificate' });
+
+const roleSchema = new Schema({
+    _id: { type: ObjectId, required: false, ref: 'role', default: null },
+    name: { type: String, required: false, default: null }
+},{ _id : false });
+
+const departmentSchema = new Schema({
+    _id: { type: ObjectId, required: false, ref: 'department', default: null },
+    name: { type: String, required: false, default: null }
+},{ _id : false });
+
+const identitySchema = new Schema([{
+    type: { type: String, enum: Object.values(identityType), required: false, default: null },
+    identity: { type: String, required: false, default: null },
+},{ _id : false }]);
+
+const personalSchema = new Schema({
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    phone: [{ type: String, required: true }],
+    gender: { type: String, enum: Object.values(gender), required: true },
+    photo: { type: String, required: false, default: null },
+    dateOfBirth: { type: Date, required: false, default: null },
+    bloodGroup: { type: String, required: false, default: null },
+    fathersName: { type: String, required: false, default: null },
+    mothersName: { type: String, required: false, default: null },
+    identity: { type: identitySchema, required: false },
+    religion: { type: String, required: false, default: null },
+    presentAddress: { type: String, required: false, default: null },
+    permanentAddress: { type: String, required: false, default: null },
+},{ _id : false });
 
 const schema = new Schema({
-    name: {
-        type: String,
-        required: true,
+    role: {
+        type: roleSchema,
+        required: false,
+        default: () => ({})
+    },
+    department: {
+        type: departmentSchema,
+        required: false,
+        default: () => ({})
     },
     email: {
         type: String,
@@ -26,18 +67,21 @@ const schema = new Schema({
         type: String,
         required: true,
     },
-    roles: [{
-        type: ObjectId,
-        ref: "Role",
-        default: [],
-    }],
-    activated: {
-        type: Boolean,
-        default: false,
+    personal: {
+        type: personalSchema,
+        required: false,
+        default: () => ({})
     },
-}, {
-    timestamps: true,
-});
+    superAdmin: {
+        type: Boolean,
+        required: true,
+    },
+    status: {
+        type: String,
+        enum: Object.values(status),
+        default: status.active
+    },
+}, { timestamps: true });
 
 schema.statics.isUnique = async function (username, email) {
     const user = await this.findOne({
@@ -85,6 +129,5 @@ schema.methods.toJSON = function () {
     return obj;
 };
 
-const model = mongoose.model("User", schema);
-
-module.exports = model;
+const model = mongoose.model("user", schema);
+module.exports = {UserModel: model, UserStatus: status, UserGender: gender, UserIdentityType: identityType};

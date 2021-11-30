@@ -24,9 +24,7 @@ const schema = new Schema({
         type: Boolean,
         default: false,
     },
-}, {
-    timestamps: true,
-});
+}, { timestamps: true });
 
 schema.index({name: 1, secret: 1}, {unique: true});
 
@@ -46,6 +44,5 @@ schema.statics.isUnique = async function (name, secret) {
     return true;
 };
 
-const model = mongoose.model("OAuthClient", schema);
-
-module.exports = model;
+const model = mongoose.model("o_auth_client", schema);
+module.exports = {OAuthClientModel: model};

@@ -9,11 +9,11 @@ const schema = new Schema({
     user: {
         type: ObjectId,
         required: true,
-        ref: "User"
+        ref: "user"
     },
     scopes: [{
         type: String,
-        ref: "Permission",
+        ref: "permission",
         default: []
     }],
     revoked: {
@@ -24,16 +24,12 @@ const schema = new Schema({
         type: Date,
         required: true,
     },
-}, {
-    timestamps: true,
-});
+}, { timestamps: true });
 
 schema.methods.isValid = function () {
     const token = this;
-
     return !token.revoked;
 };
 
-const model = mongoose.model("OAuthAccessToken", schema);
-
-module.exports = model;
+const model = mongoose.model("o_auth_access_token", schema);
+module.exports = {OAuthAccessTokenModel: model};

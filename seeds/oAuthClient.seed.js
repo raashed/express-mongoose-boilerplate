@@ -1,4 +1,4 @@
-const OAuthClientModel = require("../models/oAuthClient.model");
+const {OAuthClientModel} = require("../models/oAuthClient.model");
 const validationError = require("../utils/validationError");
 
 setTimeout(async () => {

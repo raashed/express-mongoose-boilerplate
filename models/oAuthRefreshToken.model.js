@@ -10,12 +10,12 @@ const schema = new Schema({
     accessToken: {
         type: String,
         required: true,
-        ref: "OAuthAccessToken",
+        ref: "o_auth_access_token",
     },
     client: {
         type: ObjectId,
         required: true,
-        ref: "OAuthClient"
+        ref: "o_auth_client"
     },
     revoked: {
         type: Boolean,
@@ -25,16 +25,12 @@ const schema = new Schema({
         type: Date,
         required: true,
     },
-}, {
-    timestamps: true,
-});
+}, { timestamps: true });
 
 schema.methods.isValid = function () {
     const token = this;
-
     return !token.revoked && moment(token.expires) > moment(new Date());
 };
 
-const model = mongoose.model("OAuthRefreshToken", schema);
-
-module.exports = model;
+const model = mongoose.model("o_auth_refresh_token", schema);
+module.exports = {OAuthRefreshTokenModel: model};
