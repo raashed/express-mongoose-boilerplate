@@ -57,7 +57,7 @@ NB: Please remember production run will use [`pm2`](https://pm2.keymetrics.io/).
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-# Thanks for Contributing
+### Thanks for Contributing
 [`Mohiuddin Khan`](https://github.com/mkromi)
 
 Please make sure to update tests as appropriate.
